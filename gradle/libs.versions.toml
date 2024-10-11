@@ -33,6 +33,7 @@ testCore = "1.6.1"
 coreKtxVersion = "1.6.1"
 mockk = "1.13.12"
 turbineVersion = "1.1.0"
+timber = "5.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,6 +65,8 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

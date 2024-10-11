@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -17,6 +19,15 @@ android {
     }
 
     buildTypes {
+        val keystoreFile = project.rootProject.file("keys.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+        debug {
+            val baseUrl = properties.getProperty("BASE_URL") ?: ""
+
+            buildConfigField(type = "String", name = "BASE_URL", value = baseUrl)
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -32,9 +43,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
+    implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

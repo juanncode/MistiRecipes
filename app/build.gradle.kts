@@ -82,6 +82,8 @@ dependencies {
     //koin
     implementation(libs.bundles.koin.compose)
 
+    implementation(libs.timber)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
