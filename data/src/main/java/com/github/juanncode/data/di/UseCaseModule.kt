@@ -1,6 +1,7 @@
 package com.github.juanncode.data.di
 
 import com.github.juanncode.domain.usecases.FetchRecipesUseCase
+import com.github.juanncode.domain.usecases.FilterRecipesByQueryUseCase
 import com.github.juanncode.domain.usecases.GetRecipeByIdUseCase
 import com.github.juanncode.domain.usecases.GetRecipesFlowUseCase
 import com.github.juanncode.domain.usecases.IsRecipesEmptyUseCase
@@ -13,5 +14,6 @@ val useCaseModule = module {
     single { GetRecipesFlowUseCase(get()) }
     single { FetchRecipesUseCase(get()) }
     single { GetRecipeByIdUseCase(get()) }
+    single { FilterRecipesByQueryUseCase() }
 
 }

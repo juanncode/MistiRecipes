@@ -2,7 +2,6 @@ package com.github.juanncode.mistirecipes.screens.detail.components
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,10 +34,10 @@ fun TitleItem(
 
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "$nameStep ${index + 1}", fontSize = 12.sp)
-            Spacer(modifier = Modifier.width(3.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(text = value, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
 
         }

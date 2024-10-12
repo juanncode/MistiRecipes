@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -107,6 +108,7 @@ fun SharedTransitionScope.HomeScreen(
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.recipe_logo),
+                            modifier = Modifier.size(40.dp),
                             contentDescription = "bet"
                         )
                     }
@@ -131,6 +133,7 @@ fun SharedTransitionScope.HomeScreen(
                         animatedVisibilityScope = animatedVisibilityScope!!
                     ) {
                         navController.navigate(AppRouter.DetailRoute(idRecipe = recipe.id))
+                        focusManager.clearFocus()
                     }
                 }
             }

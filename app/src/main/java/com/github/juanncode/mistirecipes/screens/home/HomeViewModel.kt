@@ -7,6 +7,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.juanncode.domain.usecases.FetchRecipesUseCase
+import com.github.juanncode.domain.usecases.FilterRecipesByQueryUseCase
 import com.github.juanncode.domain.usecases.GetRecipesFlowUseCase
 import com.github.juanncode.domain.usecases.IsRecipesEmptyUseCase
 import com.github.juanncode.domain.usecases.RefreshRecipesUseCase
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val isRecipesEmptyUseCase: IsRecipesEmptyUseCase,
+    private val filterRecipesByQueryUseCase: FilterRecipesByQueryUseCase,
     private val refreshRecipesUseCase: RefreshRecipesUseCase,
     private val getRecipesFlowUseCase: GetRecipesFlowUseCase,
     private val fetchRecipesUseCase: FetchRecipesUseCase
@@ -31,7 +32,6 @@ class HomeViewModel(
 
     private var _state =  MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
-
 
     fun onEvent(event: HomeEvent) {
         when(event) {
@@ -51,19 +51,9 @@ class HomeViewModel(
             snapshotFlow {
                 _state.value.textFieldState.text
             }.debounce(300).collectLatest { textFilter ->
-                _state.value = if (textFilter.isEmpty()) {
-                    _state.value.copy(recipes = _state.value.recipesBackup)
-                } else {
-                    _state.value.copy(
-                        recipes = _state.value.recipesBackup.filter { rec ->
-                            rec.name.lowercase().contains(textFilter.toString().lowercase().trim()) ||
-                            rec.ingredients.any {
-                                it.lowercase().contains(textFilter.toString().lowercase().trim())
-                            }
-                        }.toList()
-                    )
-                }
-
+                _state.value = _state.value.copy(
+                    recipes = filterRecipesByQueryUseCase(textFilter, _state.value.recipesBackup)
+                )
             }
         }
     }
