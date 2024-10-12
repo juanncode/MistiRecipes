@@ -8,6 +8,8 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,16 +21,21 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -39,6 +46,7 @@ import androidx.navigation.NavController
 import com.github.juanncode.mistirecipes.R
 import com.github.juanncode.mistirecipes.config.AppRouter
 import com.github.juanncode.mistirecipes.screens.components.GradientBackground
+import com.github.juanncode.mistirecipes.screens.components.MistiTextField
 import com.github.juanncode.mistirecipes.screens.components.MistiToolbar
 import com.github.juanncode.mistirecipes.screens.home.components.RecipeItem
 import com.github.juanncode.mistirecipes.ui.theme.MistiRecipesTheme
@@ -56,6 +64,8 @@ fun SharedTransitionScope.HomeScreen(
 
     val context = LocalContext.current
     val listState = rememberLazyGridState()
+    val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
 
     LaunchedEffect(key1 = true) {
         if (state.recipes.isEmpty()) onEvent(HomeEvent.InitialValues)
@@ -81,6 +91,12 @@ fun SharedTransitionScope.HomeScreen(
             }
         ) {
             LazyVerticalGrid(
+                modifier = Modifier.clickable(
+                    interactionSource = interactionSource,
+                    indication = null
+                ) {
+                    focusManager.clearFocus()
+                },
                 state = listState,
                 columns = GridCells.Fixed(count = columns),
                 contentPadding = PaddingValues(horizontal = 5.dp, vertical = 10.dp)
@@ -95,10 +111,25 @@ fun SharedTransitionScope.HomeScreen(
                         )
                     }
                 }
+                item(span = { GridItemSpan(columns) }) {
+                    MistiTextField(
+                        state = state.textFieldState,
+                        endIcon = Icons.Default.Close,
+                        startIcon = Icons.Default.Search,
+                        hint = stringResource(id = R.string.find_recipe),
+                        onClickEndIcon = {
+                            onEvent(HomeEvent.CleanTextField)
+                        }
+                    )
+                }
                 items(
                     state.recipes
                 ) { recipe ->
-                    RecipeItem(recipe = recipe, sharedTransitionScope = this@HomeScreen, animatedVisibilityScope = animatedVisibilityScope!!) {
+                    RecipeItem(
+                        recipe = recipe,
+                        sharedTransitionScope = this@HomeScreen,
+                        animatedVisibilityScope = animatedVisibilityScope!!
+                    ) {
                         navController.navigate(AppRouter.DetailRoute(idRecipe = recipe.id))
                     }
                 }
@@ -106,7 +137,9 @@ fun SharedTransitionScope.HomeScreen(
 
             if (state.loading) {
                 Column(
-                    modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f)),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -131,7 +164,7 @@ fun SharedTransitionScope.HomeScreen(
 
 private fun HomeScreenPreview() {
 
-    MistiRecipesTheme{
+    MistiRecipesTheme {
         SharedTransitionScope {
             HomeScreen(
                 state = HomeState(),
@@ -139,7 +172,7 @@ private fun HomeScreenPreview() {
                 navController = NavController(LocalContext.current),
                 animatedVisibilityScope = null,
 
-            )
+                )
         }
 
     }

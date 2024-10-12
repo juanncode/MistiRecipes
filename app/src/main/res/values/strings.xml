@@ -9,4 +9,5 @@
     <string name="keyboard_arrow_up">Ver menos ingredientes</string>
     <string name="see_preparation">Ver preparación</string>
     <string name="ingredient">Ingr.</string>
+    <string name="find_recipe">Busca tu receta</string>
 </resources>

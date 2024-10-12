@@ -1,17 +1,23 @@
+@file:OptIn(FlowPreview::class)
+
 package com.github.juanncode.mistirecipes.screens.home
 
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.juanncode.domain.repository.RecipeRepository
 import com.github.juanncode.domain.usecases.FetchRecipesUseCase
 import com.github.juanncode.domain.usecases.GetRecipesFlowUseCase
 import com.github.juanncode.domain.usecases.IsRecipesEmptyUseCase
 import com.github.juanncode.domain.usecases.RefreshRecipesUseCase
 import com.github.juanncode.domain.utils.Resource
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -26,20 +32,45 @@ class HomeViewModel(
     private var _state =  MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
+
     fun onEvent(event: HomeEvent) {
         when(event) {
             HomeEvent.CleanError -> _state.value = _state.value.copy(error = null)
             HomeEvent.InitialValues -> {
+                observeTextField()
                 getRecipesFlow()
                 fetchRecipes()
             }
             HomeEvent.RefreshMovies -> refreshRecipes()
+            HomeEvent.CleanTextField -> _state.value.textFieldState.clearText()
+        }
+    }
+
+    private fun observeTextField() {
+        viewModelScope.launch {
+            snapshotFlow {
+                _state.value.textFieldState.text
+            }.debounce(300).collectLatest { textFilter ->
+                _state.value = if (textFilter.isEmpty()) {
+                    _state.value.copy(recipes = _state.value.recipesBackup)
+                } else {
+                    _state.value.copy(
+                        recipes = _state.value.recipesBackup.filter { rec ->
+                            rec.name.lowercase().contains(textFilter.toString().lowercase().trim()) ||
+                            rec.ingredients.any {
+                                it.lowercase().contains(textFilter.toString().lowercase().trim())
+                            }
+                        }.toList()
+                    )
+                }
+
+            }
         }
     }
 
     fun getRecipesFlow() {
        getRecipesFlowUseCase().onEach {
-            _state.value = _state.value.copy(recipes = it)
+            _state.value = _state.value.copy(recipes = it, recipesBackup = it)
         }.launchIn(viewModelScope)
     }
 
