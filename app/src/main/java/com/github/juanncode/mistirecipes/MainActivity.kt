@@ -11,14 +11,15 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.juanncode.mistirecipes.config.AppRouter
-import com.github.juanncode.mistirecipes.screens.HomeScreen
-import com.github.juanncode.mistirecipes.screens.HomeViewModel
+import com.github.juanncode.mistirecipes.screens.home.HomeScreen
+import com.github.juanncode.mistirecipes.screens.home.HomeViewModel
 import com.github.juanncode.mistirecipes.ui.theme.MistiRecipesTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,8 +41,14 @@ class MainActivity : ComponentActivity() {
                             ) {
                             composable<AppRouter.HomeRoute> {
                                 val viewModel = koinViewModel<HomeViewModel>()
-                                viewModel.getRecipes()
-                                HomeScreen()
+                                val state = viewModel.state.collectAsState().value
+
+                                HomeScreen(
+                                    state = state,
+                                    onEvent = viewModel::onEvent,
+                                    navController = navController,
+                                    animatedVisibilityScope = this
+                                )
                             }
 
                         }
