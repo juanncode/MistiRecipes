@@ -2,6 +2,9 @@ package com.github.juanncode.mistirecipes
 
 import android.app.Application
 import com.github.juanncode.data.di.dataModule
+import com.github.juanncode.data.di.retrofitModule
+import com.github.juanncode.data.di.roomModule
+import com.github.juanncode.data.di.useCaseModule
 import com.github.juanncode.mistirecipes.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -21,7 +24,10 @@ class RecipesApp: Application() {
             androidContext(this@RecipesApp)
             modules(
                 appModule,
-                dataModule
+                dataModule,
+                retrofitModule,
+                roomModule,
+                useCaseModule
             )
 
         }

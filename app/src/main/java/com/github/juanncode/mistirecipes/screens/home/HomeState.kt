@@ -5,6 +5,7 @@ import com.github.juanncode.domain.utils.ErrorGeneric
 
 data class HomeState(
     val loading: Boolean = false,
+    val refreshing: Boolean = false,
     val error: ErrorGeneric? = null,
     val recipes: List<Recipe> = emptyList(),
 )

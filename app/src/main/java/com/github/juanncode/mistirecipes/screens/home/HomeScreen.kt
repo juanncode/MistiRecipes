@@ -7,9 +7,12 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -25,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +41,7 @@ import com.github.juanncode.mistirecipes.R
 import com.github.juanncode.mistirecipes.screens.components.GradientBackground
 import com.github.juanncode.mistirecipes.screens.components.MistiToolbar
 import com.github.juanncode.mistirecipes.screens.home.components.RecipeItem
+import com.github.juanncode.mistirecipes.ui.theme.MistiBlue
 import com.github.juanncode.mistirecipes.ui.theme.MistiRecipesTheme
 
 private const val columns = 2
@@ -71,7 +76,7 @@ fun SharedTransitionScope.HomeScreen(
 
     GradientBackground {
         PullToRefreshBox(
-            isRefreshing = state.loading,
+            isRefreshing = state.refreshing,
             onRefresh = {
                 onEvent(HomeEvent.RefreshMovies)
             }
@@ -98,25 +103,22 @@ fun SharedTransitionScope.HomeScreen(
 
                     }
                 }
-
-                if (state.loading) {
-                    item(span = { GridItemSpan(columns) }) {
-                        Column(
-                            modifier = Modifier.padding(vertical = 15.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            CircularProgressIndicator()
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = stringResource(id = R.string.loading),
-                                style = TextStyle(fontWeight = FontWeight.SemiBold)
-                            )
-                        }
-                    }
-                }
-
             }
 
+            if (state.loading) {
+                Column(
+                    modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = stringResource(id = R.string.loading),
+                        style = TextStyle(fontWeight = FontWeight.SemiBold)
+                    )
+                }
+            }
 
         }
     }
