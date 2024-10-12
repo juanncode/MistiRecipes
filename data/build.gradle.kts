@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.serialization)
+    kotlin("kapt")
 
 }
 
@@ -64,6 +65,11 @@ dependencies {
 
     //koin
     implementation(libs.bundles.koin)
+
+    //room
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
 
     //serialization
     implementation(libs.kotlin.serialization)

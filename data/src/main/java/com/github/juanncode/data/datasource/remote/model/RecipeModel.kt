@@ -1,4 +1,4 @@
-package com.github.juanncode.data.datasource.model
+package com.github.juanncode.data.datasource.remote.model
 
 import com.google.gson.annotations.SerializedName
 

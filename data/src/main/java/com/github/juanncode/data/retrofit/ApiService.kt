@@ -1,6 +1,6 @@
 package com.github.juanncode.data.retrofit
 
-import com.github.juanncode.data.datasource.model.RecipeModel
+import com.github.juanncode.data.datasource.remote.model.RecipeModel
 import retrofit2.http.GET
 
 interface ApiService {

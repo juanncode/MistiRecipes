@@ -7,6 +7,8 @@ import com.github.juanncode.domain.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -19,28 +21,18 @@ class HomeViewModel(
     fun onEvent(event: HomeEvent) {
         when(event) {
             HomeEvent.CleanError -> _state.value = _state.value.copy(error = null)
-            HomeEvent.InitialValues -> getRecipes()
-            HomeEvent.RefreshMovies -> getRecipes()
-        }
-    }
+            HomeEvent.InitialValues -> {
+                getRecipesFlow()
+            }
+            HomeEvent.RefreshMovies -> {
 
-    fun getRecipes() {
-
-        viewModelScope.launch {
-            _state.value = _state.value.copy(loading = true)
-            val response = recipeRepository.getRecipes()
-            _state.value = _state.value.copy(loading = false)
-
-            when(response) {
-                is Resource.Error -> {
-                    _state.value = _state.value.copy(error = response.error)
-                }
-                is Resource.Success -> {
-                    _state.value = _state.value.copy(recipes = response.value)
-                }
             }
         }
-
     }
 
+    fun getRecipesFlow() {
+        recipeRepository.getRecipesFlow().onEach {
+            _state.value = _state.value.copy(recipes = it)
+        }.launchIn(viewModelScope)
+    }
 }
