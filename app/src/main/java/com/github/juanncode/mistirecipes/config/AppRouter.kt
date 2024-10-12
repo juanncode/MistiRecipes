@@ -7,5 +7,5 @@ sealed class AppRouter {
     @Serializable
     data object HomeRoute: AppRouter()
     @Serializable
-    data class DetailRoute(val idMovie: Long) : AppRouter()
+    data class DetailRoute(val idRecipe: Int) : AppRouter()
 }

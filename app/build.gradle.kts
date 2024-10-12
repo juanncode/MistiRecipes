@@ -71,7 +71,6 @@ dependencies {
 
     //navigation
     implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation)
 
     //coil
     implementation(libs.coil.compose)

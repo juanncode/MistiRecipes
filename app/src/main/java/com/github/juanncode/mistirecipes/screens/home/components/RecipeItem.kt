@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -25,19 +26,22 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.github.juanncode.domain.Recipe
+import com.github.juanncode.mistirecipes.helpers.getDifficultyColor
 
 @Composable
 fun RecipeItem(
     recipe: Recipe,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope?,
-    onClickListener: (Long) -> Unit,
+    onClickListener: (Int) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(340.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onClickListener(recipe.id) },
+
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -91,10 +95,10 @@ fun RecipeItem(
                             .height(180.dp)
                             .width(120.dp)
                             .clip(RoundedCornerShape(12.dp))
-//                            .sharedElement(
-//                                state = rememberSharedContentState(key = "image/${movie.id}"),
-//                                animatedVisibilityScope = animatedVisibilityScope!!
-//                            )
+                            .sharedElement(
+                                state = rememberSharedContentState(key = "image/${recipe.id}"),
+                                animatedVisibilityScope = animatedVisibilityScope!!
+                            )
                         ,
                         contentScale = ContentScale.Crop
                     )
@@ -110,7 +114,11 @@ fun RecipeItem(
                     text = recipe.preparationTime,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Text(text = recipe.difficulty)
+                Text(
+                    text = recipe.difficulty,
+                    color = getDifficultyColor(recipe.difficulty),
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
     }

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -38,10 +37,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.juanncode.mistirecipes.R
+import com.github.juanncode.mistirecipes.config.AppRouter
 import com.github.juanncode.mistirecipes.screens.components.GradientBackground
 import com.github.juanncode.mistirecipes.screens.components.MistiToolbar
 import com.github.juanncode.mistirecipes.screens.home.components.RecipeItem
-import com.github.juanncode.mistirecipes.ui.theme.MistiBlue
 import com.github.juanncode.mistirecipes.ui.theme.MistiRecipesTheme
 
 private const val columns = 2
@@ -59,7 +58,7 @@ fun SharedTransitionScope.HomeScreen(
     val listState = rememberLazyGridState()
 
     LaunchedEffect(key1 = true) {
-        onEvent(HomeEvent.InitialValues)
+        if (state.recipes.isEmpty()) onEvent(HomeEvent.InitialValues)
     }
 
     LaunchedEffect(key1 = state.error) {
@@ -100,7 +99,7 @@ fun SharedTransitionScope.HomeScreen(
                     state.recipes
                 ) { recipe ->
                     RecipeItem(recipe = recipe, sharedTransitionScope = this@HomeScreen, animatedVisibilityScope = animatedVisibilityScope!!) {
-
+                        navController.navigate(AppRouter.DetailRoute(idRecipe = recipe.id))
                     }
                 }
             }

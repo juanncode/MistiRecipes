@@ -3,4 +3,10 @@
     <string name="go_back">go back</string>
     <string name="misti_toolbar">Misti</string>
     <string name="loading">Cargando...</string>
+    <string name="step">Paso</string>
+    <string name="see_ingredients">Ver ingredientes</string>
+    <string name="keyboard_arrow_down">Ver más ingredientes</string>
+    <string name="keyboard_arrow_up">Ver menos ingredientes</string>
+    <string name="see_preparation">Ver preparación</string>
+    <string name="ingredient">Ingr.</string>
 </resources>
