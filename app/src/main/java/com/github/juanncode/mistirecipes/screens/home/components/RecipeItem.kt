@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,6 +56,9 @@ fun RecipeItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(350.dp)
+            .clickable {
+                onClickListener(recipe.id)
+            }
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
@@ -156,7 +160,7 @@ fun RecipeItem(
 
 @Preview(showBackground = true)
 @Composable
-fun MovieItemPreview() {
+fun RecipeItemPreview() {
     MaterialTheme {
         SharedTransitionScope {
             RecipeItem(

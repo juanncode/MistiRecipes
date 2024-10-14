@@ -29,7 +29,7 @@ class RoomDatasourceTest {
     }
 
     @Test
-    fun `test get movies`() = runTest {
+    fun `test get recipes`() = runTest {
         val recipesEntities = listOf(
             recipeEntityMock.copy(id = 1 ,name = "Pasta", ingredients =  listOf("Tomate", "Pasta", "Basil")),
             recipeEntityMock.copy(id = 2, name = "Pasta", ingredients =  listOf("Tomate", "Pasta", "Basil")),
@@ -48,15 +48,15 @@ class RoomDatasourceTest {
 
 
     @Test
-    fun testGetMovieById() = runTest {
+    fun testGetRecipeById() = runTest {
         val recipeEntity = recipeEntityMock.copy(id = 1 ,name = "Pasta", ingredients =  listOf("Tomate", "Pasta", "Basil"))
         `when`(recipeDao.getRecipeById(1)).thenReturn(recipeEntity)
 
         `when`(recipeDatabase.recipeDao).thenReturn(recipeDao)
 
-        val movie = roomDatasource.getRecipeById(1)
+        val recipe = roomDatasource.getRecipeById(1)
 
-        assertEquals("Pasta", movie.name)
+        assertEquals("Pasta", recipe.name)
 
         verify(recipeDao).getRecipeById(1)
     }

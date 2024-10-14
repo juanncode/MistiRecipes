@@ -60,7 +60,7 @@ fun RecipeDetailItem(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope?
 ) {
-    var scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
     var expandedIngredientsState by remember { mutableStateOf(false) }
     var expandedPreparationState by remember { mutableStateOf(false) }
 
@@ -231,7 +231,7 @@ fun RecipeDetailItem(
 
 @Preview(showBackground = true)
 @Composable
-fun MovieDetailItemPreview() {
+fun RecipeDetailItemPreview() {
     MistiRecipesTheme {
         SharedTransitionScope {
             RecipeDetailItem(

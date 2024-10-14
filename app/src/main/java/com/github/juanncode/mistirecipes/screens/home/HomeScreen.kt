@@ -88,7 +88,7 @@ fun SharedTransitionScope.HomeScreen(
         PullToRefreshBox(
             isRefreshing = state.refreshing,
             onRefresh = {
-                onEvent(HomeEvent.RefreshMovies)
+                onEvent(HomeEvent.RefreshRecipes)
             }
         ) {
             LazyVerticalGrid(

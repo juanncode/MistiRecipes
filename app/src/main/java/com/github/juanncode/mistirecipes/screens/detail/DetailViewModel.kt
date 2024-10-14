@@ -14,7 +14,7 @@ class DetailViewModel(
     private var _state =  MutableStateFlow(DetailState())
     val state: StateFlow<DetailState> = _state.asStateFlow()
 
-    private fun getMovie(id: Int) {
+    private fun getRecipe(id: Int) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
             val recipe = getRecipeByIdUseCase(id)
@@ -25,7 +25,7 @@ class DetailViewModel(
 
     fun onEvent(event: DetailEvent) {
         when (event) {
-            is DetailEvent.GetMovie -> getMovie(event.id)
+            is DetailEvent.GetRecipe -> getRecipe(event.id)
         }
 
     }

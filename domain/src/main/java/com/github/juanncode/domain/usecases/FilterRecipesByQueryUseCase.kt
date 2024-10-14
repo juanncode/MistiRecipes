@@ -2,7 +2,7 @@ package com.github.juanncode.domain.usecases
 
 import com.github.juanncode.domain.Recipe
 
-class FilterRecipesByQueryUseCase() {
+class FilterRecipesByQueryUseCase {
     operator fun invoke(query: CharSequence, recipes: List<Recipe>): List<Recipe> {
         if (query.isEmpty()) {
             return recipes

@@ -25,7 +25,7 @@ fun SharedTransitionScope.DetailScreen(
 ) {
 
     LaunchedEffect(key1 = true) {
-        onEvent(DetailEvent.GetMovie(idRecipe))
+        onEvent(DetailEvent.GetRecipe(idRecipe))
     }
     GradientBackground {
         if (state.isLoading)

@@ -58,12 +58,12 @@ class HomeViewModelTest {
             awaitItem()
             val emission = awaitItem()
             println(emission)
-            Assert.assertEquals(recipes,emission.recipes)
+            assertEquals(recipes,emission.recipes)
         }
     }
 
     @Test
-    fun `should set loading and fetch recipes on event GetNewMovies`() = runTest {
+    fun `should set loading and fetch recipes on event GetNewRecipes`() = runTest {
         `when`(fetchRecipesUseCase()).thenReturn(Resource.Success(Unit))
 
         viewModel.fetchRecipes()
@@ -106,7 +106,7 @@ class HomeViewModelTest {
     fun `refresh recipes sets loading and no error on successful fetch`() = runTest {
         `when`( refreshRecipesUseCase()).thenReturn( Resource.Success(Unit))
 
-        viewModel.onEvent(HomeEvent.RefreshMovies)
+        viewModel.onEvent(HomeEvent.RefreshRecipes)
 
         viewModel.state.test {
             awaitItem()

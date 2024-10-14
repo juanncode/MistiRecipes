@@ -40,7 +40,7 @@ class HomeViewModel(
                 getRecipesFlow()
                 fetchRecipes()
             }
-            HomeEvent.RefreshMovies -> refreshRecipes()
+            HomeEvent.RefreshRecipes -> refreshRecipes()
             HomeEvent.CleanTextField -> _state.value.textFieldState.clearText()
         }
     }
@@ -75,7 +75,7 @@ class HomeViewModel(
         }
     }
 
-    fun refreshRecipes() {
+    private fun refreshRecipes() {
         viewModelScope.launch {
             _state.value = _state.value.copy(refreshing = true)
             delay(500)

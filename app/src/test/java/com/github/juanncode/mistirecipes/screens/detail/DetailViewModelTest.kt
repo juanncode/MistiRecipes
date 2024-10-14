@@ -2,17 +2,10 @@
 
 package com.github.juanncode.mistirecipes.screens.detail
 
-import androidx.compose.runtime.snapshotFlow
 import app.cash.turbine.test
 import com.github.juanncode.domain.usecases.GetRecipeByIdUseCase
 import com.github.juanncode.mistirecipes.CoroutinesTestRule
-import com.github.juanncode.mistirecipes.screens.home.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -46,7 +39,7 @@ class DetailViewModelTest {
         val mockRecipe = com.github.juanncode.mistirecipes.recipeMock.copy(id = 1, name = "Recipe 1", ingredients = listOf("Tomato", "Pasta"))
         `when`(getRecipeByIdUseCase(1)).thenReturn(mockRecipe)
 
-        viewModel.onEvent(DetailEvent.GetMovie(1))
+        viewModel.onEvent(DetailEvent.GetRecipe(1))
 
         viewModel.state.test {
             awaitItem()
