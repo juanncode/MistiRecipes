@@ -53,9 +53,10 @@ class MainActivity : ComponentActivity() {
                             composable<AppRouter.DetailRoute> {
                                 val args = it.toRoute<AppRouter.DetailRoute>()
                                 val viewModel = koinViewModel<DetailViewModel>()
+                                val state = viewModel.state.collectAsState().value
                                 DetailScreen(
                                     idRecipe = args.idRecipe,
-                                    state = viewModel.state,
+                                    state = state,
                                     navController = navController,
                                     onEvent = {
                                         viewModel.onEvent(it)

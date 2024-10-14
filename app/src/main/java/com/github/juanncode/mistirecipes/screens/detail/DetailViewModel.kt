@@ -1,24 +1,24 @@
 package com.github.juanncode.mistirecipes.screens.detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.juanncode.domain.usecases.GetRecipeByIdUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val getRecipeByIdUseCase: GetRecipeByIdUseCase,
 ): ViewModel() {
-    var state by mutableStateOf(DetailState())
-        private set
+    private var _state =  MutableStateFlow(DetailState())
+    val state: StateFlow<DetailState> = _state.asStateFlow()
 
     private fun getMovie(id: Int) {
         viewModelScope.launch {
-            state = state.copy(isLoading = true)
+            _state.value = _state.value.copy(isLoading = true)
             val recipe = getRecipeByIdUseCase(id)
-            state = state.copy(isLoading = false, recipe = recipe)
+            _state.value = _state.value.copy(isLoading = false, recipe = recipe)
         }
 
     }

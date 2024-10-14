@@ -10,7 +10,7 @@ class FilterRecipesByQueryUseCase() {
         return recipes.filter { rec ->
             rec.name.lowercase().contains(query.toString().lowercase().trim()) ||
             rec.ingredients.any {
-                it.lowercase().contains(query.toString().trim())
+                it.lowercase().contains(query.toString().lowercase().trim())
             }
         }
 

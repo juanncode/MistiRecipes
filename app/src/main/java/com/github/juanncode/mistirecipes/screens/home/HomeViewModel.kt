@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.github.juanncode.domain.usecases.FetchRecipesUseCase
 import com.github.juanncode.domain.usecases.FilterRecipesByQueryUseCase
 import com.github.juanncode.domain.usecases.GetRecipesFlowUseCase
-import com.github.juanncode.domain.usecases.IsRecipesEmptyUseCase
 import com.github.juanncode.domain.usecases.RefreshRecipesUseCase
 import com.github.juanncode.domain.utils.Resource
 import kotlinx.coroutines.FlowPreview
